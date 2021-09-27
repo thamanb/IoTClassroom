@@ -20,13 +20,12 @@ class Pi_Stream:
                     with obj.mp_face_detection.FaceDetection(
                     model_selection=1, min_detection_confidence=0.5) as face_detection:
                         image = cv2.imdecode(obj.video_stream, 1)
-                        obj.test = image
                         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                         image.flags.writeable = False
                         results = face_detection.process(image)
                         if results.detections:
                             obj.face_count = results.detections
-                            obj.faces = True    
+                            obj.faces = True   
                         else:
                             obj.face_count = 0
                             obj.faces = False

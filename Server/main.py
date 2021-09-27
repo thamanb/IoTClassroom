@@ -1,4 +1,3 @@
-
 import socket 
 import threading
 from flask import Flask, render_template, Response
@@ -34,8 +33,7 @@ def start_thread():
         
         
 
-video = 0
-start = True
+
 
 
 
@@ -50,18 +48,14 @@ def home():
 
 #generator function   
 def gen():
-    global video
-    global start
-    while True:
-        if start:
-            start = False
-            video = Pi_Stream.pi_objs[0].video_stream
-        else:           
-            for obj in Pi_Stream.pi_objs:
-                if obj.faces:
-                    video = obj.video_stream
+    video = 0
+    while True:        
+        for index, obj in enumerate(Pi_Stream.pi_objs):
+            if obj.faces:
+                video = index
+        
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-        bytearray(video) + b'\r\n')
+        bytearray(Pi_Stream.pi_objs[video].video_stream) + b'\r\n')
             
 
 
