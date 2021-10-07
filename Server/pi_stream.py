@@ -30,8 +30,34 @@ class Pi_Stream:
                             obj.face_count = 0
                             obj.faces = False
     
-    def __init__(self, connection, addr):
+    @staticmethod
+    def hand_detect():
+        while True:
+            for obj in Pi_Stream.pi_objs:
+                if(obj.vid_frame_cnt > 10):
+                    with obj.mp_pose.Pose(
+                        min_detection_confidence=0.5,
+                        min_tracking_confidence=0.5) as pose:
+                        image = cv2.imdecode(obj.video_stream, 1)
+                        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        image.flags.writeable = False
+                        results = pose.process(image)
+                        try:
+                            print(1)
+                            landmarks = results.pose_landmark.landmark
+                            print(results)
+                            if(landmarks[obj.mp_pose.PoseLandmark.LEFT_WRIST].y <= landmarks[obj.mp_pose.PoseLandmark.NOSE].y or
+                                landmarks[obj.mp_pose.PoseLandmark.RIGHT_WRIST].y <= landmarks[obj.mp_pose.PoseLandmark.NOSE].y):
+                                obj.question = True
+                            else:
+                                obj.question = False
+                        except:
+                            pass
+
+    def __init__(self, connection, addr, piType):
         self.video_stream = 0
+        self.piType = piType
+        self.question = False
         self.vid_frame_cnt = 0
         self.audio_stream = 0
         self.face_count = 0
@@ -40,6 +66,7 @@ class Pi_Stream:
         self.addr = addr
         self.pi_threads()
         self.mp_face_detection = mp.solutions.face_detection
+        self.mp_pose = mp.solutions.pose
         self.mp_drawing = mp.solutions.drawing_utils
         
         

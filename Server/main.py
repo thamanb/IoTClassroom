@@ -7,18 +7,12 @@ from pi_stream import Pi_Stream
 
 PORT = 5050
 # SERVER should be changed based on the server computers IP
-SERVER = '192.168.200.242'
+# SERVER = '192.168.200.242'
+SERVER = '192.168.1.105'
 ADDR = (SERVER, PORT)
 server = socket.socket()
 server.bind(ADDR)
-
-
-
-
-
-
-
-  
+type = "hand"
 
 def start_thread():
 
@@ -28,15 +22,9 @@ def start_thread():
     while True:
         # waits for connection and then creates socket object
         connection, addr = server.accept()
-        Pi_Stream.pi_objs.append(Pi_Stream(connection, addr))
+        Pi_Stream.pi_objs.append(Pi_Stream(connection, addr, type))
         print(Pi_Stream.pi_objs[-1].addr[0])
         
-        
-
-
-
-
-
 
 #Flask
 app = Flask(__name__)
@@ -71,7 +59,11 @@ if __name__ == "__main__":
     
     socketListener = threading.Thread(target=start_thread)
     socketListener.start()
-    faceDetect = threading.Thread(target=Pi_Stream.face_detect)
-    faceDetect.start()
+    if (type == "hand"):
+        pose_detect =  threading.Thread(target=Pi_Stream.hand_detect)
+        pose_detect.start()
+    else:
+        faceDetect = threading.Thread(target=Pi_Stream.face_detect)
+        faceDetect.start()
     app.run(host='0.0.0.0', debug=False)
-    
+        
