@@ -5,11 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="../static/script.js"></script>
 </head>
+<ul>
+    <li id="home"><a href="#">Home</a></li>
+    <li><a href="#">Sign In</a></li>
+    <li><a href="#">Join a Call</a></li>
+    <li><a href="#">Start a Call</a></li>
+  </ul>
 <body>
+    <img src="{{ url_for('video_feed') }}" class = "center">
+
     
-    <img src="{{ url_for('video_feed') }}">    
-    
-    
+
 </body>
 </html>
