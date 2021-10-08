@@ -43,12 +43,12 @@ class Pi_Stream:
                         image.flags.writeable = False
                         results = pose.process(image)
                         try:
-                            print(1)
-                            landmarks = results.pose_landmark.landmark
-                            print(results)
-                            if(landmarks[obj.mp_pose.PoseLandmark.LEFT_WRIST].y <= landmarks[obj.mp_pose.PoseLandmark.NOSE].y or
-                                landmarks[obj.mp_pose.PoseLandmark.RIGHT_WRIST].y <= landmarks[obj.mp_pose.PoseLandmark.NOSE].y):
+                            landmarks = results.pose_landmarks.landmark
+                            poseLan = obj.mp_pose.PoseLandmark
+                            if(landmarks[poseLan.LEFT_WRIST].y <= landmarks[poseLan.NOSE].y or
+                            landmarks[poseLan.RIGHT_WRIST].y <= landmarks[poseLan.NOSE].y):
                                 obj.question = True
+                                print(obj.question)
                             else:
                                 obj.question = False
                         except:

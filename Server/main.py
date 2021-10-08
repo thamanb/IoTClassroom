@@ -37,11 +37,15 @@ def home():
 #generator function   
 def gen():
     video = 0
-    while True:        
-        for index, obj in enumerate(Pi_Stream.pi_objs):
-            if obj.faces:
-                video = index
-        
+    while True:     
+        if type == "face":   
+            for index, obj in enumerate(Pi_Stream.pi_objs):
+                if obj.faces:
+                    video = index
+        else:
+            for index, obj in enumerate(Pi_Stream.pi_objs):
+                if obj.question:
+                    video = index
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
         bytearray(Pi_Stream.pi_objs[video].video_stream) + b'\r\n')
             
