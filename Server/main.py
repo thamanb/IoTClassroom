@@ -5,10 +5,10 @@ import numpy as np
 from pi_stream import Pi_Stream
 
 
-PORT = 5050
+PORT = 5080
 # SERVER should be changed based on the server computers IP
 # SERVER = '192.168.200.242'
-SERVER = '192.168.1.105'
+SERVER = '192.168.237.1'
 ADDR = (SERVER, PORT)
 server = socket.socket()
 server.bind(ADDR)

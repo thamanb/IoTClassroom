@@ -5,7 +5,8 @@ import numpy as np
 import io
 import cv2
 import mediapipe as mp
-
+import time
+import datetime
 
 class Pi_Stream:
     # static list to hold pi objects
@@ -25,7 +26,10 @@ class Pi_Stream:
                         results = face_detection.process(image)
                         if results.detections:
                             obj.face_count = results.detections
-                            obj.faces = True   
+                            obj.faces = True
+                            if not obj.timePrinted: 
+                                print("FACE-DETECTED:", datetime.datetime.now().time())  
+                                obj.timePrinted = True
                         else:
                             obj.face_count = 0
                             obj.faces = False
@@ -48,7 +52,9 @@ class Pi_Stream:
                             if(landmarks[poseLan.LEFT_WRIST].y <= landmarks[poseLan.NOSE].y or
                             landmarks[poseLan.RIGHT_WRIST].y <= landmarks[poseLan.NOSE].y):
                                 obj.question = True
-                                print(obj.question)
+                                if not obj.timePrinted:
+                                    print("HAND-RAISED", datetime.datetime.now().time())
+                                    obj.timePrinted = True
                             else:
                                 obj.question = False
                         except:
@@ -68,6 +74,7 @@ class Pi_Stream:
         self.mp_face_detection = mp.solutions.face_detection
         self.mp_pose = mp.solutions.pose
         self.mp_drawing = mp.solutions.drawing_utils
+        self.timePrinted = False
         
         
     def pi_threads(self):
